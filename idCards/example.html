@@ -11,14 +11,47 @@
     
     <div id="app">
         <h1> {{ message.split('').reverse().join('') }}</h1>
+        <!-- event handling = métodos -->
         <button @click="increment">count is: {{ count }}</button>
 
-        
+        <!-- esto es binding : -->
         <h1 :class="titleClass"> {{ message }}</h1>
         <div :class="phraseClass"> {{ message2 }} </div>
+
+        <!-- forms vers 1-->
+        <input :value="text" @input="onInput" placeholder="Type here">
+        <p>{{ text }}</p>
+
+        <!-- forms vers 2 -->
+        <input v-model="text2" placeholder="Type here 2">
+        <p>{{ text2 }}</p>
+
+        <hr>
+        <!-- condicional if/else -->
+        <button @click="toggle">Encendido {{ flagOn }}</button>
+        <h1 v-if="flagOn">Entramos al if</h1>
+        <h1 v-else>Estamos en el else 😢</h1>
+
+        <!-- Renderizado de listas -->
+        <input v-model="newTask" @keyup.enter="addTask" placeholder="Add a new task">
+        <button @click="addTask">Add Task</button>
+        <button @click="clearAll">Clear list</button>
+        <ul>
+            <li v-for:="task in filterTasks" :key="task.id">
+                <input type="checkbox" v-model="task.done">
+                <span :class="{ done: task.done }">{{ task.text }}, id: {{task.id}}, done: {{task.done}}</span>
+                <button @click="removeTask(task)">X</button>
+            </li>
+        </ul>
+        <!-- <button>show tasks</button> -->
+        <button @click="hideCompletedTasks = !hideCompletedTasks">
+            {{ hideCompletedTasks ? 'Show all tasks' : 'Hide completed tasks' }}
+        </button>
     </div>
 
     <script>
+        let id=0;
+
         Vue.createApp({
             data() {
             return {
@@ -26,13 +59,48 @@
                 count: 0,
                 titleClass: 'title',
                 message2: 'Alguna frase random',
-                phraseClass: 'phrase'
+                phraseClass: 'phrase',
+                text: '',
+                text2: '',
+                flagOn: true,
+                tasks: [
+                    {id: id++, text: 'descargar NodeJs', done: false},
+                    {id: id++, text: 'crear proyecto de vue', done: false},
+                    {id: id++, text: 'leer de javascript', done: false}
+                ],
+                newTask: '',
+                hideCompletedTasks: false
 
             }
+          },
+          computed:{
+            filterTasks(){
+                return this.hideCompletedTasks ?  this.tasks.filter((t) => !t.done) : this.tasks;
+            }  
           },
           methods: {
             increment() {
               this.count++
+            },
+            onInput(e){
+                this.text = e.target.value
+            },
+            toggle(){
+                this.flagOn = !this.flagOn
+            },
+            addTask(){
+                // this.tasks.push(newTask);
+                this.tasks.push({ id: id++, text: this.newTask, done: false });
+                newTask = '';
+            },
+            removeTask(task){
+                //hacemos una nueva lista
+                //this.tasks = this.tasks.filter((t) => t == task); //esta borra todos los elementos de la lista menos ese
+                this.tasks = this.tasks.filter((t) => t !== task);//Este borra el elemento que yo quiero de la lista
+            },
+            clearAll(task){
+                this.tasks = [];
+                id = 0;
             }
           }
         }).mount('#app')
@@ -45,6 +113,9 @@
         .phrase {
             color:rgb(77, 74, 74);
             font-style: italic;
+        }
+        .done {
+            text-decoration: line-through;
         }
     </style>
     <!-- <script src="index.js"></script> -->

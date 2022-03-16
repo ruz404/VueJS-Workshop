@@ -5,26 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IDENTIFICATION CARDS</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <script src="https://unpkg.com/vue@3"></script>
-    <div id="app">
-        {{ message }}
-        <!-- <h1> {{ message.split('').reverse().join('') }}</h1> -->
-    
-    </div>
+    <div id="app">  
+        <img :class="gender" :src="picture" :alt="`${firstName} ${lastName}`">
+        <h1>{{ firstName }} {{ lastName }}</h1>
+        <h3>Email: {{ email }}</h3>
+        <button v-on:click="getUser()" :class="gender">Get User</button>
 
-
-    <script>
-        Vue.createApp({
-            data() {
-            return {
-                message: 'Hello WORLD!'
-            }
-            }
-        }).mount('#app')
-    </script>
+    </div>    
     
-    <!-- <script src="index.js"></script> -->
+    <script src="index.js"></script>
 </body>
 </html>
