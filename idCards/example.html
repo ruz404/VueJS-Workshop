@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EjemploS</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+    
+    <div id="app">
+        <h1> {{ message.split('').reverse().join('') }}</h1>
+        <button @click="increment">count is: {{ count }}</button>
+
+        
+        <h1 :class="titleClass"> {{ message }}</h1>
+        <div :class="phraseClass"> {{ message2 }} </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            data() {
+            return {
+                message: 'Soy un título!',
+                count: 0,
+                titleClass: 'title',
+                message2: 'Alguna frase random',
+                phraseClass: 'phrase'
+
+            }
+          },
+          methods: {
+            increment() {
+              this.count++
+            }
+          }
+        }).mount('#app')
+    </script>
+
+    <style>
+        .title {
+          color: red;
+        }
+        .phrase {
+            color:rgb(77, 74, 74);
+            font-style: italic;
+        }
+    </style>
+    <!-- <script src="index.js"></script> -->
+</body>
+</html>
+
